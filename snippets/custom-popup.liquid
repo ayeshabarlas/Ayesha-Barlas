@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch(`/products/${handle}.js`)
         .then(res => res.json())
         .then(product => {
+
           let colors = [], sizes = [];
 
           product.options.forEach((opt, i) => {
@@ -276,25 +277,19 @@ document.addEventListener("DOMContentLoaded", function () {
               return;
             }
 
-            const normalizedColor = selectedColor.trim().toLowerCase();
-            const normalizedSize = selectedSize.trim().toLowerCase();
-
-            console.log("Selected Color:", selectedColor);
-            console.log("Selected Size:", selectedSize);
-            console.log("Normalized Color:", normalizedColor);
-            console.log("Normalized Size:", normalizedSize);
-
             fetch('/cart/add.js', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
             }).then(() => {
-              if (normalizedColor.includes("black") && normalizedSize.includes("med")) {
-                const softJacketId = 49862175326494;
+              const normalizedColor = selectedColor.trim().toLowerCase();
+              const normalizedSize = selectedSize.trim().toLowerCase();
 
-                fetch('/cart/add.js', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
+              if (normalizedColor === "black" && normalizedSize === "medium") {
+                const softJacketId = 49862175326494;
+                fetch("/cart/add.js", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ id: softJacketId, quantity: 1 })
                 }).then(() => {
                   alert("✅ Product + Free Jacket added to cart!");
@@ -306,8 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
               }
 
               popup.style.display = "none";
-            }).catch(() => {
-              alert("❌ Failed to add product to cart.");
             });
           });
 
