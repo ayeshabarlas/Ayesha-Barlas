@@ -161,6 +161,16 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+  .free-gift-message {
+    display: none;
+    background: #f8f8f8;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #2c2c2c;
+  }
 </style>
 
 <script>
@@ -222,6 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="size-select">Choose your size ▼
               <div class="size-dropdown">${sizeOptions}</div>
             </div>
+            <div class="free-gift-message">🎁 Select Black color and Medium size to get a FREE Soft Leather Jacket!</div>
             <button class="add-to-cart-button">Add to Cart</button>
             <button class="popup-close">×</button>
           `;
@@ -230,6 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           let selectedColor = null;
           let selectedSize = null;
+          const freeGiftMessage = popupContent.querySelector(".free-gift-message");
 
           const colorBtns = popupContent.querySelectorAll(".color-btn");
           colorBtns.forEach(btn => {
@@ -237,6 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
               colorBtns.forEach(b => b.classList.remove("active"));
               btn.classList.add("active");
               selectedColor = btn.dataset.color;
+              updateFreeGiftMessage();
             });
           });
 
@@ -252,8 +265,22 @@ document.addEventListener("DOMContentLoaded", function () {
               selectedSize = opt.dataset.size;
               sizeSelect.innerHTML = `${opt.dataset.size} ▼`;
               sizeDropdown.style.display = 'none';
+              updateFreeGiftMessage();
             });
           });
+
+          function updateFreeGiftMessage() {
+            const normalizedColor = selectedColor?.toLowerCase();
+            const normalizedSize = selectedSize?.toLowerCase();
+            
+            if (normalizedColor === "black" && normalizedSize === "medium") {
+              freeGiftMessage.style.display = "block";
+              freeGiftMessage.innerHTML = "🎁 You'll receive a FREE Soft Leather Jacket with this selection!";
+            } else {
+              freeGiftMessage.style.display = "block";
+              freeGiftMessage.innerHTML = "🎁 Select Black color and Medium size to get a FREE Soft Leather Jacket!";
+            }
+          }
 
           popupContent.querySelector(".add-to-cart-button").addEventListener("click", () => {
             if (!selectedColor || !selectedSize) {
@@ -266,37 +293,45 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
             if (!foundVariant) {
-              alert("This combination doesn’t exist.");
+              alert("This combination doesn't exist.");
               return;
             }
 
             const normalizedColor = selectedColor.trim().toLowerCase();
             const normalizedSize = selectedSize.trim().toLowerCase();
 
-            console.log("Color:", normalizedColor);
-            console.log("Size:", normalizedSize);
-
+            // Add main product to cart
             fetch('/cart/add.js', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
-            }).then(() => {
+            })
+            .then(() => {
+              // Check if color is black and size is medium
               if (normalizedColor === "black" && normalizedSize === "medium") {
-                const softJacketId = 49862175326494;
-                fetch("/cart/add.js", {
+                // Add soft leather jacket
+                const softJacketId = 49862175326494; // Your soft jacket variant ID
+                return fetch("/cart/add.js", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ id: softJacketId, quantity: 1 })
-                }).then(() => {
-                  alert("✅ Product + Free Jacket added to cart!");
-                }).catch(() => {
-                  alert("Product added, bonus failed");
+                })
+                .then(() => {
+                  alert("✅ Product + Free Soft Leather Jacket added to cart!");
+                  popup.style.display = "none";
+                })
+                .catch(() => {
+                  alert("Product added, but free jacket couldn't be added");
+                  popup.style.display = "none";
                 });
               } else {
                 alert("✅ Product added to cart!");
+                popup.style.display = "none";
               }
-
-              popup.style.display = "none";
+            })
+            .catch(error => {
+              alert("Failed to add product to cart");
+              console.error('Error:', error);
             });
           });
 
