@@ -1,11 +1,12 @@
 <!-- Figma Promo Top Bar (with animations) -->
+<div class="desktop-header-wrapper">
 <div class="figma-header-bar-animated">
   <div class="figma-header-inner">
     <div class="logo">TISSO VISION</div>
     <div class="center-message">Find the ideal gift for your loved ones.</div>
     <a class="yellow-btn-animated" href="/collections/all"> CHOOSE GIFT <span class="arrow">→</span> </a>
   </div>
-  
+  </div>
 <!-- MOBILE ONLY: Toggle + Promo Content -->
 <div class="promo-mobile-wrapper">
   <button class="promo-toggle" onclick="togglePromo()">☰</button>
@@ -81,6 +82,12 @@
 
 /* Show only on mobile */
 @media screen and (max-width: 500px) {
+   
+  .desktop-header-wrapper {
+    display: none !important;
+  }
+
+
   .figma-header-inner {
     flex-direction: column;
     align-items: flex-start;
