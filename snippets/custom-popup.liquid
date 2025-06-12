@@ -1,0 +1,317 @@
+<div id="productPopup" class="popup" style="display: none;">
+  <div class="popup-inner">
+    <button class="popup-close">×</button>
+    <div id="popupContent">Loading...</div>
+  </div>
+</div>
+
+<style>
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .popup-inner {
+    background: #fff;
+    max-width: 360px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 20px;
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    font-family: 'Helvetica Neue', sans-serif;
+    animation: popup-fade 0.3s ease-out;
+  }
+
+  @keyframes popup-fade {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .popup-inner img {
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 15px;
+  }
+
+  .popup-inner h2 {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .popup-inner .price {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .popup-inner .desc {
+    font-size: 14px;
+    color: #444;
+    margin: 10px 0 15px;
+  }
+
+  .popup-inner label {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 10px 0 5px;
+    display: block;
+  }
+
+  .color-options {
+    display: flex;
+    border: 1px solid #000;
+    overflow: hidden;
+    margin-bottom: 15px;
+  }
+
+  .color-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    border-right: 1px solid black;
+  }
+
+  .color-btn:last-child {
+    border-right: none;
+  }
+
+  .color-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--border-color);
+    border-radius: 2px 0 0 2px;
+  }
+
+  .color-btn.active {
+    font-weight: bold;
+    outline: 2px solid black;
+    outline-offset: -2px;
+  }
+
+  .size-select {
+    border: 1px solid #000;
+    cursor: pointer;
+    position: relative;
+    padding: 10px;
+    font-size: 14px;
+    background: #fff;
+    margin-bottom: 15px;
+  }
+
+  .size-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #000;
+    background: #fff;
+    z-index: 999;
+  }
+
+  .size-option {
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+  }
+
+  .size-option:hover {
+    background: #f0f0f0;
+  }
+
+  .add-to-cart-button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const popup = document.getElementById("productPopup");
+  const popupContent = document.getElementById("popupContent");
+  const openButtons = document.querySelectorAll(".product-popup-btn");
+
+  if (!popup || !popupContent || !openButtons.length) return;
+
+  openButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const handle = btn.closest(".grid-item").dataset.productHandle;
+
+      fetch(`/products/${handle}.js`)
+        .then(res => res.json())
+        .then(product => {
+
+          let colors = [], sizes = [];
+
+          product.options.forEach((opt, i) => {
+            if (opt.name.toLowerCase() === "color") {
+              product.variants.forEach(v => {
+                const color = v.options[i];
+                if (!colors.includes(color)) colors.push(color);
+              });
+            } else {
+              product.variants.forEach(v => {
+                const size = v.options[i];
+                if (!sizes.includes(size)) sizes.push(size);
+              });
+            }
+          });
+
+          // Helper to get color hex by name
+          function getColor(name) {
+            const map = {
+              red: "#b71c1c",
+              black: "#000000",
+              white: "#ffffff",
+              grey: "#757575",
+              gray: "#757575",
+              green: "#388e3c",
+              blue: "#1976d2",
+              yellow: "#fdd835",
+              pink: "#e91e63",
+            };
+            return map[name.toLowerCase()] || "#ccc";
+          }
+
+          const colorButtons = colors.map(c => {
+            return `<button class="color-btn" data-color="${c}" style="--border-color: ${getColor(c)};">${c}</button>`;
+          }).join("");
+
+          const sizeOptions = sizes.map(s =>
+            `<div class="size-option" data-size="${s}">${s}</div>`
+          ).join("");
+
+          popupContent.innerHTML = `
+            <img src="${product.featured_image}" alt="${product.title}" />
+            <h2>${product.title}</h2>
+            <p class="price">$${(product.price / 100).toFixed(2)}</p>
+            <p class="desc">${product.description}</p>
+            <label>Color</label>
+            <div class="color-options">${colorButtons}</div>
+            <label>Size</label>
+            <div class="size-select">Choose your size ▼
+              <div class="size-dropdown">${sizeOptions}</div>
+            </div>
+            <button class="add-to-cart-button">Add to Cart</button>
+            <button class="popup-close">×</button>
+          `;
+
+          popup.style.display = "flex";
+
+          let selectedColor = null;
+          let selectedSize = null;
+
+          const colorBtns = popupContent.querySelectorAll(".color-btn");
+          colorBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+              colorBtns.forEach(b => b.classList.remove("active"));
+              btn.classList.add("active");
+              selectedColor = btn.dataset.color;
+            });
+          });
+
+          const sizeDropdown = popupContent.querySelector(".size-dropdown");
+          const sizeSelect = popupContent.querySelector(".size-select");
+
+          sizeSelect.addEventListener("click", () => {
+            sizeDropdown.style.display = sizeDropdown.style.display === "block" ? "none" : "block";
+          });
+
+          sizeDropdown.querySelectorAll(".size-option").forEach(opt => {
+            opt.addEventListener("click", () => {
+              selectedSize = opt.dataset.size;
+              sizeSelect.innerHTML = `${opt.dataset.size} ▼`;
+              sizeDropdown.style.display = 'none';
+            });
+          });
+
+          popupContent.querySelector(".add-to-cart-button").addEventListener("click", () => {
+            if (!selectedColor || !selectedSize) {
+              alert("Please select both color and size");
+              return;
+            }
+
+            const foundVariant = product.variants.find(v =>
+              v.options.includes(selectedColor) && v.options.includes(selectedSize)
+            );
+
+            if (!foundVariant) {
+              alert("This combination doesn’t exist.");
+              return;
+            }
+
+            fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
+            }).then(() => {
+              // 🎁 Bonus product add
+              const softJacketId = 49862175326494; // Your bonus variant ID
+              fetch("/cart/add.js", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: softJacketId, quantity: 1 })
+              }).then(() => {
+                alert("✅ Product + Free Jacket added to cart!");
+              });
+
+              popup.style.display = "none";
+            });
+          });
+
+          popupContent.querySelector(".popup-close").addEventListener("click", () => {
+            popup.style.display = "none";
+          });
+
+          popup.addEventListener("click", (e) => {
+            if (e.target === popup) popup.style.display = "none";
+          });
+
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+              popup.style.display = "none";
+            }
+          });
+        });
+    });
+  });
+});
+</script>
