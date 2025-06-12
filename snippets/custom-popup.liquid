@@ -283,12 +283,13 @@ fetch('/cart/add.js', {
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
 }).then(() => {
-  // ✅ Check condition before adding bonus product
+  // ✅ Bonus condition
   if (
-    selectedColor.toLowerCase() === "black" &&
-    selectedSize.toLowerCase() === "medium"
+    selectedColor && selectedSize &&
+    selectedColor.trim().toLowerCase() === "black" &&
+    selectedSize.trim().toLowerCase() === "medium"
   ) {
-    const softJacketId = 49862175326494; // Your bonus variant ID
+    const softJacketId = 49862175326494;
     fetch("/cart/add.js", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
