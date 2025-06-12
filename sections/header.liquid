@@ -1,22 +1,14 @@
 <!-- Figma Promo Top Bar (with animations) -->
 <div class="figma-header-bar-animated">
   <div class="figma-header-inner">
-    <div class="figma-logo-toggle">
-      <div class="logo">TISSO VISION</div>
-      <button class="toggle-button" onclick="togglePromo()">☰</button>
-    </div>
-    <div class="promo-content" id="promoContent">
-      <div class="center-message">Find the ideal gift for your loved ones.</div>
-      <a class="yellow-btn-animated" href="/collections/all">CHOOSE GIFT <span class="arrow">→</span></a>
-      <button class="close-button" onclick="togglePromo()">✕</button>
-    </div>
+    <div class="logo">TISSO VISION</div>
+    <div class="center-message">Find the ideal gift for your loved ones.</div>
+    <a class="yellow-btn-animated" href="/collections/all"> CHOOSE GIFT <span class="arrow">→</span> </a>
   </div>
 </div>
 
 <style>
-  <style>
   .figma-header-bar-animated {
-    display: none; /* hidden by default */
     background: #fafafa;
     border-bottom: 1px solid #eee;
     padding: 10px 20px;
@@ -24,49 +16,23 @@
   }
 
   .figma-header-inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .figma-logo-toggle {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    gap: 20px;
+    flex-wrap: wrap;
   }
 
   .logo {
     font-weight: bold;
-    font-size: 16px;
-  }
-
-  .toggle-button,
-  .close-button {
-    font-size: 18px;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  .promo-content {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 10px;
-    width: 100%;
-    animation: fadeInDown 0.3s ease-in-out;
-  }
-
-  .promo-content.show {
-    display: flex;
   }
 
   .center-message {
+    flex: 1;
+    text-align: center;
     font-size: 14px;
-    margin-bottom: 5px;
   }
 
   .yellow-btn-animated {
@@ -96,40 +62,18 @@
     transform: translateX(5px);
   }
 
-  @keyframes fadeInDown {
-    0% {
-      opacity: 0;
-      transform: translateY(-10px);
+  @media screen and (max-width: 500px) {
+    .figma-header-inner {
+      flex-direction: column;
+      align-items: flex-start;
     }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 
-  /* 🔒 ONLY SHOW IN MOBILE (under 990px) */
-  @media screen and (max-width: 989px) {
-    .figma-header-bar-animated {
-      display: block;
+    .center-message {
+      text-align: left;
+      margin: 5px 0;
     }
   }
 </style>
-
-<script>
-  function togglePromo() {
-    const promo = document.getElementById("promoContent");
-    promo.classList.toggle("show");
-  }
-</script>
-
-
-
-<script>
-  function togglePromo() {
-    const promo = document.getElementById("promoContent");
-    promo.classList.toggle("show");
-  }
-</script>
 
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
