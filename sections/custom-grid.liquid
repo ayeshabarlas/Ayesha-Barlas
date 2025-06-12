@@ -1,0 +1,71 @@
+<section class="figma-product-grid">
+  <h2 class="grid-heading">{{ section.settings.title }}</h2>
+  <div class="product-grid">
+    {% for i in (1..6) %}
+      {% assign product_key = 'product_' | append: i %}
+      {% assign handle = section.settings[product_key] %}
+      {% if handle %}
+        {% assign product = all_products[handle] %}
+        <div class="grid-item" data-product-handle="{{ handle }}" style="position: relative;">
+          {{ product.featured_image | image_url: width: 600 | image_tag: alt: product.title }}
+          <button class="product-popup-btn" aria-label="View product">+</button>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .figma-product-grid {
+    padding: 50px 20px;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .grid-item img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  .product-popup-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid black;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+  }
+  @media only screen and (max-width: 768px) {
+    .product-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Figma Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Grid Title",
+      "default": "Tisso vison in the wild"
+    },
+    { "type": "product", "id": "product_1", "label": "Product 1" },
+    { "type": "product", "id": "product_2", "label": "Product 2" },
+    { "type": "product", "id": "product_3", "label": "Product 3" },
+    { "type": "product", "id": "product_4", "label": "Product 4" },
+    { "type": "product", "id": "product_5", "label": "Product 5" },
+    { "type": "product", "id": "product_6", "label": "Product 6" }
+  ]
+}
+{% endschema %}
