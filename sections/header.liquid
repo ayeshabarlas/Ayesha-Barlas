@@ -6,91 +6,105 @@
     <a class="yellow-btn-animated" href="/collections/all"> CHOOSE GIFT <span class="arrow">→</span> </a>
   </div>
 </div>
+<button class="promo-toggle" onclick="togglePromo()">☰</button>
+<div class="promo-mobile-content" id="promoContent">
+  <div class="center-message">Find the ideal gift for your loved ones.</div>
+  <a class="yellow-btn-animated" href="/collections/all">CHOOSE GIFT <span class="arrow">→</span></a>
+</div>
 
 <style>
-    .figma-header-bar-animated {
-      background: #fafafa;
-      border-bottom: 1px solid #eee;
-      padding: 10px 20px;
-      font-family: 'Helvetica Neue', sans-serif;
-    }
-
-    .figma-header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .logo {
-      font-weight: bold;
-    }
-
-    .center-message {
-      flex: 1;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .yellow-btn-animated {
-      background: #ffeb3b;
-      color: #000;
-      padding: 8px 14px;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 4px;
-      display: inline-flex;
-      gap: 5px;
-      align-items: center;
-      transition: all 0.3s ease;
-    }
-
-    .yellow-btn-animated .arrow {
-      transition: transform 0.3s ease;
-      display: inline-block;
-    }
-
-    .yellow-btn-animated:hover {
-      background: #fdd835;
-      transform: translateY(-1px);
-    }
-
-    .yellow-btn-animated:hover .arrow {
-      transform: translateX(5px);
-    }
-
-    @media screen and (max-width: 500px) {
-      <div class="figma-header-bar-animated">
-    <div class="figma-header-inner">
-      <div class="figma-logo-toggle">
-        <div class="logo">TISSO VISION</div>
-        <button class="toggle-button" onclick="togglePromo()">☰</button>
-      </div>
-
-      <div class="promo-content" id="promoContent">
-        <div class="center-message">Find the ideal gift for your loved ones.</div>
-        <a class="yellow-btn-animated" href="/collections/all">
-          CHOOSE GIFT <span class="arrow">→</span>
-        </a>
-        <button class="close-button" onclick="togglePromo()">✕</button>
-      </div>
-    </div>
-  </div>
+      .figma-header-bar-animated {
+        background: #fafafa;
+        border-bottom: 1px solid #eee;
+        padding: 10px 20px;
+        font-family: 'Helvetica Neue', sans-serif;
+      }
 
       .figma-header-inner {
-        flex-direction: column;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
         align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        font-weight: bold;
       }
 
       .center-message {
+        flex: 1;
         text-align: center;
-        margin: 5px 0;
+        font-size: 14px;
       }
+
+      .yellow-btn-animated {
+        background: #ffeb3b;
+        color: #000;
+        padding: 8px 14px;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 4px;
+        display: inline-flex;
+        gap: 5px;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+
+      .yellow-btn-animated .arrow {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      .yellow-btn-animated:hover {
+        background: #fdd835;
+        transform: translateY(-1px);
+      }
+
+      .yellow-btn-animated:hover .arrow {
+        transform: translateX(5px);
+      }
+
+  @media screen and (max-width: 500px) {
+    .figma-header-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
     }
+
+    .promo-toggle {
+      display: block;
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .promo-mobile-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .promo-mobile-content.show {
+      display: flex;
+    }
+
+    .center-message {
+      text-align: left;
+      margin: 5px 0;
+    }
+  }
 </style>
+<script>
+  function togglePromo() {
+    const promo = document.getElementById('promoContent');
+    promo.classList.toggle('show');
+  }
+</script>
 
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
