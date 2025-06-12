@@ -27,6 +27,7 @@
 
 
 
+
 <style>
     .figma-header-bar-animated {
       background: #fafafa;
@@ -82,21 +83,16 @@
       transform: translateX(5px);
     }
 
- /* Hide mobile wrapper by default (desktop) */
-/* Default: show only desktop header */
+ /* Hide mobile promo by default on desktop */
 .promo-mobile-wrapper {
   display: none;
 }
 
-/* On mobile: hide desktop, show mobile */
+/* Show promo header ONLY on mobile */
 @media screen and (max-width: 500px) {
-  .desktop-header-wrapper {
-    display: none !important;
-  }
-
-  /* .promo-mobile-wrapper {
+  .promo-mobile-wrapper {
     display: block;
-  } */
+  }
 
   .figma-header-bar-animated {
     background: #fafafa;
@@ -116,19 +112,13 @@
     align-items: center;
   }
 
-  .promo-content {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 10px;
+  .logo {
+    font-weight: bold;
+    font-size: 16px;
   }
 
-  .toggle-button,
-  .close-button {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
+  .center-message {
+    font-size: 14px;
   }
 
   .yellow-btn-animated {
@@ -139,10 +129,26 @@
     text-decoration: none;
     border-radius: 4px;
     display: inline-flex;
-    align-items: center;
     gap: 5px;
+    align-items: center;
+  }
+
+  .promo-content {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .toggle-button,
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
   }
 }
+</style>
 
 <script>
   function togglePromo() {
