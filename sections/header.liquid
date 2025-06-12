@@ -8,71 +8,130 @@
 </div>
 
 <style>
-  .figma-header-bar-animated {
-    background: #fafafa;
-    border-bottom: 1px solid #eee;
-    padding: 10px 20px;
-    font-family: 'Helvetica Neue', sans-serif;
-  }
+    .figma-header-bar-animated {
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+      padding: 10px 20px;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
 
-  .figma-header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    font-weight: bold;
-  }
-
-  .center-message {
-    flex: 1;
-    text-align: center;
-    font-size: 14px;
-  }
-
-  .yellow-btn-animated {
-    background: #ffeb3b;
-    color: #000;
-    padding: 8px 14px;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 4px;
-    display: inline-flex;
-    gap: 5px;
-    align-items: center;
-    transition: all 0.3s ease;
-  }
-
-  .yellow-btn-animated .arrow {
-    transition: transform 0.3s ease;
-    display: inline-block;
-  }
-
-  .yellow-btn-animated:hover {
-    background: #fdd835;
-    transform: translateY(-1px);
-  }
-
-  .yellow-btn-animated:hover .arrow {
-    transform: translateX(5px);
-  }
-
-  @media screen and (max-width: 500px) {
     .figma-header-inner {
-      flex-direction: column;
-      align-items: flex-start;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-weight: bold;
     }
 
     .center-message {
+      flex: 1;
       text-align: center;
-      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .yellow-btn-animated {
+      background: #ffeb3b;
+      color: #000;
+      padding: 8px 14px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 4px;
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .yellow-btn-animated .arrow {
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .yellow-btn-animated:hover {
+      background: #fdd835;
+      transform: translateY(-1px);
+    }
+
+    .yellow-btn-animated:hover .arrow {
+      transform: translateX(5px);
+    }
+
+    @media screen and (max-width: 500px) {
+     <style>
+  /* Base styles */
+  .tissue-vision {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .toggle-menu {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 100;
+  }
+
+  .gift-section {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  }
+
+  .close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .toggle-menu {
+      display: block;
+    }
+
+    .tissue-vision {
+      flex-direction: column;
     }
   }
+  </style>
+
+  <div class="toggle-menu" onclick="toggleGiftSection()">☰</div>
+
+  <div class="gift-section">
+    <div class="close-btn" onclick="closeGiftSection()">✕</div>
+    <h3>Find Ideal Gifts</h3>
+    <button>Choose Gift</button>
+  </div>
+
+  <script>
+  function toggleGiftSection() {
+    const giftSection = document.querySelector('.gift-section');
+    giftSection.style.display = giftSection.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function closeGiftSection() {
+    document.querySelector('.gift-section').style.display = 'none';
+  }
+  </script>
+    }
 </style>
 
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
