@@ -14,7 +14,9 @@
 </div>
 
 <style>
+  <style>
   .figma-header-bar-animated {
+    display: none; /* hidden by default */
     background: #fafafa;
     border-bottom: 1px solid #eee;
     padding: 10px 20px;
@@ -22,23 +24,49 @@
   }
 
   .figma-header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .figma-logo-toggle {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    width: 100%;
   }
 
   .logo {
     font-weight: bold;
+    font-size: 16px;
+  }
+
+  .toggle-button,
+  .close-button {
+    font-size: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .promo-content {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+    width: 100%;
+    animation: fadeInDown 0.3s ease-in-out;
+  }
+
+  .promo-content.show {
+    display: flex;
   }
 
   .center-message {
-    flex: 1;
-    text-align: center;
     font-size: 14px;
+    margin-bottom: 5px;
   }
 
   .yellow-btn-animated {
@@ -68,47 +96,6 @@
     transform: translateX(5px);
   }
 
-  /* 🔽 Only for Mobile 🔽 */
-  @media screen and (max-width: 500px) {
-    .figma-header-inner {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .figma-logo-toggle {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-
-    .center-message {
-      text-align: left;
-      margin: 5px 0;
-    }
-
-    .toggle-button,
-    .close-button {
-      font-size: 18px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .promo-content {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 10px;
-      animation: fadeInDown 0.3s ease-in-out;
-      width: 100%;
-    }
-
-    .promo-content.show {
-      display: flex;
-    }
-  }
-
   @keyframes fadeInDown {
     0% {
       opacity: 0;
@@ -119,7 +106,23 @@
       transform: translateY(0);
     }
   }
+
+  /* 🔒 ONLY SHOW IN MOBILE (under 990px) */
+  @media screen and (max-width: 989px) {
+    .figma-header-bar-animated {
+      display: block;
+    }
+  }
 </style>
+
+<script>
+  function togglePromo() {
+    const promo = document.getElementById("promoContent");
+    promo.classList.toggle("show");
+  }
+</script>
+
+
 
 <script>
   function togglePromo() {
