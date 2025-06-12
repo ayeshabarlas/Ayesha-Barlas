@@ -178,7 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch(`/products/${handle}.js`)
         .then(res => res.json())
         .then(product => {
-
           let colors = [], sizes = [];
 
           product.options.forEach((opt, i) => {
@@ -197,15 +196,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
           function getColor(name) {
             const map = {
-              red: "#b71c1c",
-              black: "#000000",
-              white: "#ffffff",
-              grey: "#757575",
-              gray: "#757575",
-              green: "#388e3c",
-              blue: "#1976d2",
-              yellow: "#fdd835",
-              pink: "#e91e63",
+              red: "#b71c1c", black: "#000000", white: "#ffffff",
+              grey: "#757575", gray: "#757575", green: "#388e3c",
+              blue: "#1976d2", yellow: "#fdd835", pink: "#e91e63",
             };
             return map[name.toLowerCase()] || "#ccc";
           }
@@ -277,14 +270,17 @@ document.addEventListener("DOMContentLoaded", function () {
               return;
             }
 
+            const normalizedColor = selectedColor.trim().toLowerCase();
+            const normalizedSize = selectedSize.trim().toLowerCase();
+
+            console.log("Color:", normalizedColor);
+            console.log("Size:", normalizedSize);
+
             fetch('/cart/add.js', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
             }).then(() => {
-              const normalizedColor = selectedColor.trim().toLowerCase();
-              const normalizedSize = selectedSize.trim().toLowerCase();
-
               if (normalizedColor === "black" && normalizedSize === "medium") {
                 const softJacketId = 49862175326494;
                 fetch("/cart/add.js", {
@@ -294,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }).then(() => {
                   alert("✅ Product + Free Jacket added to cart!");
                 }).catch(() => {
-                  alert("Product added, but bonus failed.");
+                  alert("Product added, bonus failed");
                 });
               } else {
                 alert("✅ Product added to cart!");
