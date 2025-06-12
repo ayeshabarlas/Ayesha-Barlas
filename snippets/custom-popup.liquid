@@ -262,71 +262,58 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           });
 
-          // 🛒 Add to cart logic
           popupContent.querySelector(".add-to-cart-button").addEventListener("click", () => {
-            if (!selectedColor || !selectedSize) {
-              alert("Please select both color and size");
-              return;
-            }
+  if (!selectedColor || !selectedSize) {
+    alert("Please select both color and size");
+    return;
+  }
 
-            const foundVariant = product.variants.find(v =>
-              v.options.includes(selectedColor) && v.options.includes(selectedSize)
-            );
+  const foundVariant = product.variants.find(v =>
+    v.options.includes(selectedColor) && v.options.includes(selectedSize)
+  );
 
-            if (!foundVariant) {
-              alert("This combination doesn’t exist.");
-              return;
-            }
+  if (!foundVariant) {
+    alert("This combination doesn’t exist.");
+    return;
+  }
 
-            // Normalize values
-            const normalizedColor = selectedColor.trim().toLowerCase();
-            const normalizedSize = selectedSize.trim().toLowerCase();
+  // 👇 Normalize values and log them
+  const normalizedColor = selectedColor.trim().toLowerCase();
+  const normalizedSize = selectedSize.trim().toLowerCase();
 
-            // Add main product to cart
-            fetch('/cart/add.js', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
-            }).then(() => {
-              // 🎁 Check bonus condition
-              if (normalizedColor === "black" && normalizedSize === "medium") {
-                const softJacketId = 49862175326494; // Bonus jacket variant ID
+  console.log("🟨 Selected Color:", selectedColor);
+  console.log("🟨 Selected Size:", selectedSize);
+  console.log("✅ Normalized Color:", normalizedColor);
+  console.log("✅ Normalized Size:", normalizedSize);
 
-                fetch('/cart/add.js', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ id: softJacketId, quantity: 1 })
-                }).then(() => {
-                  alert("✅ Product + Free Jacket added to cart!");
-                  popup.style.display = "none";
-                }).catch(() => {
-                  alert("Product added, but bonus failed.");
-                  popup.style.display = "none";
-                });
-              } else {
-                alert("✅ Product added to cart!");
-                popup.style.display = "none";
-              }
-            }).catch(() => {
-              alert("❌ Failed to add product to cart.");
-            });
-          });
+  // 🛒 Add main product
+  fetch('/cart/add.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
+  }).then(() => {
+    // 🎁 Check if black + medium selected
+    if (normalizedColor.includes("black") && normalizedSize.includes("med")) {
+      const softJacketId = 49862175326494;
 
-          popupContent.querySelector(".popup-close").addEventListener("click", () => {
-            popup.style.display = "none";
-          });
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: softJacketId, quantity: 1 })
+      }).then(() => {
+        alert("✅ Product + Free Jacket added to cart!");
+        popup.style.display = "none";
+      }).catch(() => {
+        alert("Product added, but bonus failed.");
+        popup.style.display = "none";
+      });
 
-          popup.addEventListener("click", (e) => {
-            if (e.target === popup) popup.style.display = "none";
-          });
-
-          document.addEventListener("keydown", function (e) {
-            if (e.key === "Escape") {
-              popup.style.display = "none";
-            }
-          });
-        });
-    });
+    } else {
+      alert("✅ Product added to cart!");
+      popup.style.display = "none";
+    }
+  }).catch(() => {
+    alert("❌ Failed to add product to cart.");
   });
 });
 </script>
