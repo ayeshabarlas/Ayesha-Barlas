@@ -273,29 +273,36 @@ document.addEventListener("DOMContentLoaded", function () {
               v.options.includes(selectedColor) && v.options.includes(selectedSize)
             );
 
-            if (!foundVariant) {
-              alert("This combination doesn’t exist.");
-              return;
-            }
+          if (!foundVariant) {
+  alert("This combination doesn’t exist.");
+  return;
+}
 
-            fetch('/cart/add.js', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
-            }).then(() => {
-              // 🎁 Bonus product add
-              const softJacketId = 49862175326494; // Your bonus variant ID
-              fetch("/cart/add.js", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: softJacketId, quantity: 1 })
-              }).then(() => {
-                alert("✅ Product + Free Jacket added to cart!");
-              });
+fetch('/cart/add.js', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
+}).then(() => {
+  // ✅ Check condition before adding bonus product
+  if (
+    selectedColor.toLowerCase() === "black" &&
+    selectedSize.toLowerCase() === "medium"
+  ) {
+    const softJacketId = 49862175326494; // Your bonus variant ID
+    fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: softJacketId, quantity: 1 })
+    }).then(() => {
+      alert("✅ Product + Free Jacket added to cart!");
+    });
+  } else {
+    alert("✅ Product added to cart!");
+  }
 
-              popup.style.display = "none";
-            });
-          });
+  popup.style.display = "none";
+});
+
 
           popupContent.querySelector(".popup-close").addEventListener("click", () => {
             popup.style.display = "none";
