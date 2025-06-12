@@ -1,79 +1,212 @@
-<!-- Figma Promo Top Bar (with animations) -->
-<div class="figma-header-bar-animated">
-  <div class="figma-header-inner">
-    <div class="logo">TISSO VISION</div>
-    <div class="center-message">Find the ideal gift for your loved ones.</div>
-    <a class="yellow-btn-animated" href="/collections/all"> CHOOSE GIFT <span class="arrow">→</span> </a>
-  </div>
-</div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TISSO VISION - Responsive Header</title>
+  </head>
+  <body>
+    <!-- Figma Promo Top Bar (with animations) -->
+    <div class="figma-header-bar-animated">
+      <div class="figma-header-inner">
+        <div class="mobile-toggle" onclick="toggleMobileMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="logo">TISSO VISION</div>
+        <div class="center-message">Find the ideal gift for your loved ones.</div>
+        <a class="yellow-btn-animated" href="/collections/all"> CHOOSE GIFT <span class="arrow">→</span> </a>
+      </div>
+      <div class="mobile-content" id="mobileContent">
+        <div class="mobile-message">Find the ideal gift for your loved ones.</div>
+        <a class="yellow-btn-animated mobile-btn" href="/collections/all"> CHOOSE GIFT <span class="arrow">→</span> </a>
+      </div>
+    </div>
 
-<style>
-  .figma-header-bar-animated {
-    background: #fafafa;
-    border-bottom: 1px solid #eee;
-    padding: 10px 20px;
-    font-family: 'Helvetica Neue', sans-serif;
-  }
+    <style>
+      .figma-header-bar-animated {
+        background: #fafafa;
+        border-bottom: 1px solid #eee;
+        padding: 10px 20px;
+        font-family: 'Helvetica Neue', sans-serif;
+      }
+      .figma-header-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .logo {
+        font-weight: bold;
+      }
+      .center-message {
+        flex: 1;
+        text-align: center;
+        font-size: 14px;
+      }
+      .yellow-btn-animated {
+        background: #ffeb3b;
+        color: #000;
+        padding: 8px 14px;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 4px;
+        display: inline-flex;
+        gap: 5px;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+      .yellow-btn-animated .arrow {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+      .yellow-btn-animated:hover {
+        background: #fdd835;
+        transform: translateY(-1px);
+      }
+      .yellow-btn-animated:hover .arrow {
+        transform: translateX(5px);
+      }
 
-  .figma-header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
+      /* Mobile Toggle Button - Hidden by default */
+      .mobile-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        width: 24px;
+        height: 20px;
+        justify-content: space-between;
+      }
+      .mobile-toggle span {
+        width: 100%;
+        height: 2px;
+        background: #000;
+        transition: all 0.3s ease;
+      }
+      .mobile-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+      .mobile-toggle.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .mobile-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
 
-  .logo {
-    font-weight: bold;
-  }
+      /* Mobile Content - Hidden by default */
+      .mobile-content {
+        display: none;
+        padding: 15px 0;
+        border-top: 1px solid #eee;
+        margin-top: 10px;
+        text-align: center;
+      }
+      .mobile-message {
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      .mobile-btn {
+        display: inline-flex !important;
+      }
 
-  .center-message {
-    flex: 1;
-    text-align: center;
-    font-size: 14px;
-  }
+      /* Mobile Media Query */
+      @media (max-width: 768px) {
+        .figma-header-inner {
+          justify-content: center;
+          position: relative;
+          flex-wrap: nowrap;
+        }
 
-  .yellow-btn-animated {
-    background: #ffeb3b;
-    color: #000;
-    padding: 8px 14px;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 4px;
-    display: inline-flex;
-    gap: 5px;
-    align-items: center;
-    transition: all 0.3s ease;
-  }
+        .mobile-toggle {
+          display: flex;
+          position: absolute;
+          left: 0;
+        }
 
-  .yellow-btn-animated .arrow {
-    transition: transform 0.3s ease;
-    display: inline-block;
-  }
+        .logo {
+          text-align: center;
+          flex: 1;
+        }
 
-  .yellow-btn-animated:hover {
-    background: #fdd835;
-    transform: translateY(-1px);
-  }
+        .center-message,
+        .yellow-btn-animated:not(.mobile-btn) {
+          display: none;
+        }
 
-  .yellow-btn-animated:hover .arrow {
-    transform: translateX(5px);
-  }
+        .mobile-content.show {
+          display: block;
+          animation: slideDown 0.3s ease;
+        }
+      }
 
-  @media screen and (max-width: 500px) {
-    .figma-header-inner {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-    .center-message {
-      text-align: left;
-      margin: 5px 0;
-    }
-  }
-</style>
+      /* Smaller mobile screens */
+      @media (max-width: 480px) {
+        .figma-header-bar-animated {
+          padding: 10px 15px;
+        }
+        .logo {
+          font-size: 16px;
+        }
+        .mobile-message {
+          font-size: 13px;
+        }
+        .yellow-btn-animated {
+          padding: 10px 16px;
+          font-size: 14px;
+        }
+      }
+    </style>
+
+    <script>
+      function toggleMobileMenu() {
+        const toggle = document.querySelector('.mobile-toggle');
+        const content = document.getElementById('mobileContent');
+
+        toggle.classList.toggle('active');
+        content.classList.toggle('show');
+      }
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const toggle = document.querySelector('.mobile-toggle');
+        const content = document.getElementById('mobileContent');
+
+        if (!toggle.contains(event.target) && !content.contains(event.target)) {
+          toggle.classList.remove('active');
+          content.classList.remove('show');
+        }
+      });
+    </script>
+
+    <!-- Demo content to show the header in context -->
+    <div style="padding: 50px 20px; text-align: center; font-family: 'Helvetica Neue', sans-serif;">
+      <h1>Welcome to TISSO VISION</h1>
+      <p>
+        This is a demo page to showcase the responsive header. Try resizing your browser window or viewing on mobile to
+        see the responsive behavior.
+      </p>
+      <p style="margin-top: 30px; color: #666;">
+        <strong>Desktop:</strong> Full header with centered message and button<br>
+        <strong>Mobile:</strong> Centered logo with hamburger menu on left
+      </p>
+    </div>
+  </body>
+</html>
 
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
