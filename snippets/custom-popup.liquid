@@ -178,7 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch(`/products/${handle}.js`)
         .then(res => res.json())
         .then(product => {
-
           let colors = [], sizes = [];
 
           product.options.forEach((opt, i) => {
@@ -263,6 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           });
 
+          // 🛒 Add to cart logic
           popupContent.querySelector(".add-to-cart-button").addEventListener("click", () => {
             if (!selectedColor || !selectedSize) {
               alert("Please select both color and size");
@@ -273,36 +273,43 @@ document.addEventListener("DOMContentLoaded", function () {
               v.options.includes(selectedColor) && v.options.includes(selectedSize)
             );
 
-          if (!foundVariant) {
-  alert("This combination doesn’t exist.");
-  return;
-}
+            if (!foundVariant) {
+              alert("This combination doesn’t exist.");
+              return;
+            }
 
-fetch('/cart/add.js', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
-}).then(() => {
-  // ✅ Bonus condition
-  if (
-    selectedColor && selectedSize &&
-    selectedColor.trim().toLowerCase() === "black" &&
-    selectedSize.trim().toLowerCase() === "medium"
-  ) {
-    const softJacketId = 49862175326494;
-    fetch("/cart/add.js", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: softJacketId, quantity: 1 })
-    }).then(() => {
-      alert("✅ Product + Free Jacket added to cart!");
-    });
-  } else {
-    alert("✅ Product added to cart!");
-  }
+            // Normalize values
+            const normalizedColor = selectedColor.trim().toLowerCase();
+            const normalizedSize = selectedSize.trim().toLowerCase();
 
-  popup.style.display = "none";
-});
+            // Add main product to cart
+            fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
+            }).then(() => {
+              // 🎁 Check bonus condition
+              if (normalizedColor === "black" && normalizedSize === "medium") {
+                const softJacketId = 49862175326494; // Bonus jacket variant ID
+
+                fetch('/cart/add.js', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ id: softJacketId, quantity: 1 })
+                }).then(() => {
+                  alert("✅ Product + Free Jacket added to cart!");
+                  popup.style.display = "none";
+                }).catch(() => {
+                  alert("Product added, but bonus failed.");
+                  popup.style.display = "none";
+                });
+              } else {
+                alert("✅ Product added to cart!");
+                popup.style.display = "none";
+              }
+            }).catch(() => {
+              alert("❌ Failed to add product to cart.");
+            });
           });
 
           popupContent.querySelector(".popup-close").addEventListener("click", () => {
