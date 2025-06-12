@@ -7,9 +7,9 @@
     <a class="yellow-btn-animated" href="/collections/all"> CHOOSE GIFT <span class="arrow">→</span> </a>
   </div>
   </div>
-<!-- MOBILE ONLY: Toggle + Promo Content -->
+<!-- <!-- MOBILE ONLY: Toggle + Promo Content -->
 <!-- MOBILE PROMO HEADER -->
-<div class="promo-mobile-wrapper">
+<!-- <div class="promo-mobile-wrapper">
   <div class="figma-headers-bar-animated">
     <div class="figma-headers-inner">
       <div class="figma-logo-toggle">
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> --> 
 
 
 
@@ -83,83 +83,131 @@
       transform: translateX(5px);
     }
 
- /* Hide mobile promo by default on desktop */
-.promo-mobile-wrapper {
-  display: none;
-}
-
-/* Show promo header ONLY on mobile */
-  @media screen and (max-width: 500px) {
-  .desktop-header-wrapper {
-    display: none;
-  }
-}
-@media screen and (max-width: 500px) {
-  
+ 
+  /* Hide on desktop by default */
   .promo-mobile-wrapper {
-    display: block;
-  }
-
-  .figma-header-bar-animated {
-    background: #fafafa;
-    padding: 10px 20px;
-    font-family: 'Helvetica Neue', sans-serif;
-  }
-
-  .figma-header-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .figma-logo-toggle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    font-weight: bold;
-    font-size: 16px;
-  }
-
-  .center-message {
-    font-size: 14px;
-  }
-
-  .yellow-btn-animated {
-    background: #ffeb3b;
-    color: #000;
-    padding: 8px 14px;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 4px;
-    display: inline-flex;
-    gap: 5px;
-    align-items: center;
-  }
-
-  .promo-content {
     display: none;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
   }
 
-  .toggle-button,
-  .close-button {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
+  /* Show only in mobile view */
+  @media screen and (max-width: 500px) {
+    .promo-mobile-wrapper {
+      display: block;
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+      padding: 10px 20px;
+      font-family: 'Helvetica Neue', sans-serif;
+      animation: fadeInDown 0.3s ease-in-out;
+    }
+
+    .figma-header-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .figma-logo-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .toggle-button,
+    .close-button {
+      font-size: 18px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .promo-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    .center-message {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .yellow-btn-animated {
+      background: #ffeb3b;
+      color: #000;
+      padding: 8px 14px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 4px;
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .yellow-btn-animated .arrow {
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .yellow-btn-animated:hover {
+      background: #fdd835;
+      transform: translateY(-1px);
+    }
+
+    .yellow-btn-animated:hover .arrow {
+      transform: translateX(5px);
+    }
+
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Hide the original Shopify header in mobile */
+    .header-wrapper {
+      display: none !important;
+    }
   }
-}
 </style>
+
+<!-- ✅ Promo only for mobile -->
+<div class="promo-mobile-wrapper">
+  <div class="figma-header-bar-animated">
+    <div class="figma-header-inner">
+      <div class="figma-logo-toggle">
+        <div class="logo">TISSO VISION</div>
+        <button class="toggle-button" onclick="togglePromo()">☰</button>
+      </div>
+      <div class="promo-content" id="promoContent">
+        <div class="center-message">Find the ideal gift for your loved ones.</div>
+        <a class="yellow-btn-animated" href="/collections/all">
+          CHOOSE GIFT <span class="arrow">→</span>
+        </a>
+        <button class="close-button" onclick="togglePromo()">✕</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   function togglePromo() {
-    const content = document.getElementById('promoContent');
-    content.style.display = content.style.display === 'flex' ? 'none' : 'flex';
+    const promo = document.getElementById('promoContent');
+    promo.style.display = promo.style.display === 'flex' ? 'none' : 'flex';
   }
 </script>
 
