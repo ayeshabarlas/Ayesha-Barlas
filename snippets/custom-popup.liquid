@@ -178,7 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch(`/products/${handle}.js`)
         .then(res => res.json())
         .then(product => {
-
           let colors = [], sizes = [];
 
           product.options.forEach((opt, i) => {
@@ -195,7 +194,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           });
 
-          // Helper to get color hex by name
           function getColor(name) {
             const map = {
               red: "#b71c1c",
@@ -278,22 +276,38 @@ document.addEventListener("DOMContentLoaded", function () {
               return;
             }
 
+            const normalizedColor = selectedColor.trim().toLowerCase();
+            const normalizedSize = selectedSize.trim().toLowerCase();
+
+            console.log("Selected Color:", selectedColor);
+            console.log("Selected Size:", selectedSize);
+            console.log("Normalized Color:", normalizedColor);
+            console.log("Normalized Size:", normalizedSize);
+
             fetch('/cart/add.js', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ id: foundVariant.id, quantity: 1 })
             }).then(() => {
-              // 🎁 Bonus product add
-              const softJacketId = 49862175326494; // Your bonus variant ID
-              fetch("/cart/add.js", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id: softJacketId, quantity: 1 })
-              }).then(() => {
-                alert("✅ Product + Free Jacket added to cart!");
-              });
+              if (normalizedColor.includes("black") && normalizedSize.includes("med")) {
+                const softJacketId = 49862175326494;
+
+                fetch('/cart/add.js', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ id: softJacketId, quantity: 1 })
+                }).then(() => {
+                  alert("✅ Product + Free Jacket added to cart!");
+                }).catch(() => {
+                  alert("Product added, but bonus failed.");
+                });
+              } else {
+                alert("✅ Product added to cart!");
+              }
 
               popup.style.display = "none";
+            }).catch(() => {
+              alert("❌ Failed to add product to cart.");
             });
           });
 
